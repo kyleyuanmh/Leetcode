@@ -1,0 +1,27 @@
+class Solution {
+public:
+    TreeNode* makeBST(vector<int>& nums,int start,int end)
+    {
+        if(start==end)
+        {
+            TreeNode* root=new TreeNode(nums[end]);
+            return root;
+        }
+        TreeNode* root=new TreeNode(nums[(end+start)/2]);
+        if((end+start)/2==start)//end-start==1的情况
+        {
+            root->right=makeBST(nums,start+1,(end+start)/2+1);
+        }
+        else
+        {
+            root->left=makeBST(nums,start,(end+start)/2-1);
+            root->right=makeBST(nums,(end+start)/2+1,end);
+        }
+        return root;
+    }
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        if(nums.size()==0)
+            return nullptr;
+         return makeBST(nums,0,nums.size()-1);
+    }
+};
