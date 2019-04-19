@@ -1,0 +1,173 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head){
+        if(head==NULL)
+        return NULL;
+        ListNode* pre=head;
+        ListNode* p=pre->next;
+        if(p==NULL){
+            return head;
+        }
+        while(p->next!=NULL)
+        {
+            ListNode* last=p->next;
+            p->next=pre;
+            pre=p;
+            p=last;
+        }
+        p->next=pre;
+        head->next=NULL;
+        return p;
+    }
+
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* l1_=l1;
+        ListNode* l2_=l2;
+        ListNode* p1=l1_;
+        ListNode* p2=l2_;
+
+        int len1=0,len2=0;
+        ListNode *p=l1_;
+        while(p!=nullptr){
+            len1++;
+            p=p->next;
+        }
+        p=l2_;
+        while(p!=nullptr){
+            len2++;
+            p=p->next;
+        }
+        
+        if(len1>=len2){
+            ListNode *p1=l1_;
+            ListNode *p2=l2_;
+            bool flag=false;
+            while(p1->next!=nullptr)
+            {
+                if(p2!=nullptr)
+                {
+                    p1->val+=p2->val;
+                    if(flag==true){
+                        p1->val+=1;
+                        flag=false;
+                    }
+                    if(p1->val>=10){
+                        p1->val-=10;
+                        flag=true;
+                    }
+                    p1=p1->next;
+                    p2=p2->next;
+                }
+                else{//p2==nullptr
+                    if(flag==true){
+                        p1->val+=1;
+                        flag=false;
+                    }
+                    if(p1->val>=10){
+                        p1->val-=10;
+                        flag=true;
+                    }
+                    p1=p1->next;
+                }
+            }
+            //p1->next==null
+            if(p2!=nullptr)
+            {
+                    p1->val+=p2->val;
+                    if(flag==true){
+                        p1->val+=1;
+                        flag=false;
+                    }
+                    if(p1->val>=10){
+                        p1->val-=10;
+                        ListNode* temp=new ListNode(1);
+                        p1->next=temp;
+                    }
+            }
+            else
+            {//p2==nullptr
+                    while(flag==true)
+                    {
+                        p1->val+=1;
+                        flag = false;
+                        if(p1->val>=10)
+                        {
+                            p1->val-=10;
+                            ListNode* temp=new ListNode(1);
+                            p1->next=temp;
+                            
+                        }
+                    }
+            }
+                
+            return l1_;
+        }
+        else{//len2>len1
+            ListNode *p1=l1_;
+            ListNode *p2=l2_;
+            bool flag=false;
+            while(p2->next!=nullptr)
+            {
+                if(p1!=nullptr)
+                {
+                    p2->val+=p1->val;
+                    if(flag==true){
+                        p2->val+=1;
+                        flag=false;
+                    }
+                    if(p2->val>=10){
+                        p2->val-=10;
+                        flag=true;
+                    }
+                    p1=p1->next;
+                    p2=p2->next;
+                }
+                else{//p1==nullptr
+                    if(flag==true){
+                        p2->val+=1;
+                        flag=false;
+                    }
+                    if(p2->val>=10){
+                        p2->val-=10;
+                        flag=true;
+                    }
+                    p2=p2->next;
+                }
+            }
+            if(p1!=nullptr)
+            {
+                    p2->val+=p1->val;
+                    if(flag==true){
+                        p2->val+=1;
+                        flag=false;
+                    }
+                    if(p2->val>=10){
+                        p2->val-=10;
+                        ListNode* temp=new ListNode(1);
+                        p2->next=temp;
+                    }
+            }
+            else{//p1==nullptr
+                    if(flag==true){
+                        p2->val+=1;
+                        flag=false;
+                    }
+                    if(p2->val>=10){
+                        p2->val-=10;
+                        ListNode* temp=new ListNode(1);
+                        p2->next=temp;
+                    }
+                }
+                
+            return l2_;
+        }
+    }
+};
