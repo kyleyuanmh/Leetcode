@@ -16,8 +16,7 @@ public:
         if(p==NULL){
             return head;
         }
-        while(p->next!=NULL)
-        {
+        while(p->next!=NULL){
             ListNode* last=p->next;
             p->next=pre;
             pre=p;
@@ -29,31 +28,24 @@ public:
     }
 
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* l1_=l1;
-        ListNode* l2_=l2;
-        ListNode* p1=l1_;
-        ListNode* p2=l2_;
-
+        ListNode* p1=l1;
+        ListNode* p2=l2;
         int len1=0,len2=0;
-        ListNode *p=l1_;
+        ListNode *p=l1;
         while(p!=nullptr){
             len1++;
             p=p->next;
         }
-        p=l2_;
+        p=l2;
         while(p!=nullptr){
             len2++;
             p=p->next;
         }
         
         if(len1>=len2){
-            ListNode *p1=l1_;
-            ListNode *p2=l2_;
             bool flag=false;
-            while(p1->next!=nullptr)
-            {
-                if(p2!=nullptr)
-                {
+            while(p1->next!=nullptr){
+                if(p2!=nullptr){
                     p1->val+=p2->val;
                     if(flag==true){
                         p1->val+=1;
@@ -79,8 +71,7 @@ public:
                 }
             }
             //p1->next==null
-            if(p2!=nullptr)
-            {
+            if(p2!=nullptr){
                     p1->val+=p2->val;
                     if(flag==true){
                         p1->val+=1;
@@ -92,32 +83,24 @@ public:
                         p1->next=temp;
                     }
             }
-            else
-            {//p2==nullptr
-                    while(flag==true)
-                    {
+            else{//p2==nullptr
+                    while(flag==true){
                         p1->val+=1;
                         flag = false;
-                        if(p1->val>=10)
-                        {
+                        if(p1->val>=10){
                             p1->val-=10;
                             ListNode* temp=new ListNode(1);
-                            p1->next=temp;
-                            
+                            p1->next=temp;  
                         }
                     }
             }
                 
-            return l1_;
+            return l1;
         }
         else{//len2>len1
-            ListNode *p1=l1_;
-            ListNode *p2=l2_;
             bool flag=false;
-            while(p2->next!=nullptr)
-            {
-                if(p1!=nullptr)
-                {
+            while(p2->next!=nullptr){
+                if(p1!=nullptr){
                     p2->val+=p1->val;
                     if(flag==true){
                         p2->val+=1;
@@ -142,8 +125,7 @@ public:
                     p2=p2->next;
                 }
             }
-            if(p1!=nullptr)
-            {
+            if(p1!=nullptr){
                     p2->val+=p1->val;
                     if(flag==true){
                         p2->val+=1;
@@ -167,7 +149,7 @@ public:
                     }
                 }
                 
-            return l2_;
+            return l2;
         }
     }
 };
