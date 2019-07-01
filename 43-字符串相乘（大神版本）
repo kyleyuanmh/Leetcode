@@ -1,0 +1,28 @@
+
+/*
+下面的解决方法，是参考别人代码，查看之后思路如下：
+  因为m位数✖️n位数的乘积最大为（m+n）位，而且第i位数(假定个位是第0位，十位为第1位，依次类推)与第j位相乘，他的结果的个位数一定在最后结果的第（i+j），
+  如果有进位，那个他的进位放在第（i+j-1），（因为string的下标中，左边是高位，所以进位一般都在左边）
+
+*/
+
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        int m = num1.size(), n = num2.size();
+        string ans(m + n, '0');
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                int sum = (num1[i] - '0') * (num2[j] - '0') + (ans[i + j + 1] - '0');
+                ans[i + j + 1] = sum % 10 + '0';    //本次乘积的个位数
+                ans[i + j] += sum / 10;             //进位数
+            }
+        }
+        for (int i = 0; i < m + n; i++) {
+            if (ans[i] != '0') {
+                return ans.substr(i);
+            }
+        }
+        return "0";
+    }
+};
