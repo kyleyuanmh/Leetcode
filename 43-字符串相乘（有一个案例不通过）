@@ -1,0 +1,106 @@
+#include<iostream>
+#include<string>
+#include<deque>
+using namespace std;
+
+/*
+ * 只有一类测试用例不通过：
+ * "123456789"
+    "987654321"
+    结果：
+  "121932631112635269"
+  就是最后少一个最高位（很费解）
+
+*/
+
+    void upDown(deque<int>& str)
+    {
+        if(str.size()<=1){
+            return;
+        }
+        for(int i=0,j=str.size()-1;i<j;i++,j--){
+            int tmp=str[i];
+            str[i]=str[j];
+            str[j]=tmp;
+        }
+    }
+
+    string multiply(string num1, string num2) {
+        int size1=num1.size();
+        int size2=num2.size();
+        deque<int> ans;
+        string rslt="";
+        if(size1==0 || size2==0){
+            return rslt;
+        }
+        if((size1==1 && num1[0]=='0')||(size2==1 && num2[0]=='0')){
+            return "0";
+        }
+        deque<int> currentRound;
+        for(int i=0; i<size1; i++)
+        {
+            int jinwei = 0;
+            for(int j=size2-1; j >= 0; j--)
+            {
+                //一轮循环得到倒置结果
+                int current_bit=(num1[i]-'0') * (num2[j]-'0') + jinwei;
+                jinwei = current_bit/10;
+                current_bit %=10;
+                currentRound.push_back(current_bit);
+                if(j==0 && jinwei!=0){
+                    currentRound.push_back(jinwei);
+                    jinwei=0;
+                }
+            }
+
+            if(i==0)
+            {
+                //第一轮，需要将所有的数据拷贝到ans中，
+                ans.clear();
+                for(auto k=currentRound.begin();k!=currentRound.end();k++)
+                {
+                    ans.push_back(*k);
+                }
+
+
+            }
+            //需要先向右移动一位，其他轮需要将curr的数据加到ans上面
+            if(i>0)
+            {
+                ans.push_front(0);
+
+
+                int tmp=0;
+                auto k1=ans.begin(),k2=currentRound.begin();
+                for(;k2!=currentRound.end();k1++,k2++)
+                {
+                    *k1 += ((*k2) + tmp);
+                    tmp = *k1/10;
+                    *k1 %=10;
+                }
+                if(k2==currentRound.end() && tmp>0)
+                {
+                      *k1+=1;
+                }
+
+            }
+
+          currentRound.clear();
+        }
+        upDown(ans);
+        for(auto ite=ans.begin();ite!=ans.end();ite++)
+        {
+            rslt += (char)('0'+ (*ite));
+        }
+        return rslt;
+    }
+
+
+int main()
+{
+  string a="123456789";
+  string b = "987654321";
+  cout<<multiply(a,b);
+
+  return 0;
+}
