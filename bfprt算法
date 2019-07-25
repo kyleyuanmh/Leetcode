@@ -1,0 +1,82 @@
+#include<bits/stdc++.h>
+using namespace std;
+int a[2];
+int bfprt(int root[],int begin,int end,int k);//这是核心函数，表示在root数组的begin位置到end位置上找出第k小的元素
+int getmedian(int root[],int beginI,int endI)//这个函数求的是在root数组中beginI位置到endI位置上的中位数（其实就是求由每5个数所分成的小组的小组内的中位数）
+{
+    sort(root+beginI,root+endI+1);
+    int sum=beginI+endI;
+    int mid=(sum/2)+(sum%2);//这个地方加上sum%2是为了确保偶数个数时我们求的是中间两个数的后一个
+    return root[mid];
+}
+int medianOfMedians(int root[],int star,int finish)//这个函数是将root数组star位置到finish位置分成每5个数一个小组，并求出每个小组内的中位数
+{
+    int num=finish-star+1;//求出长度
+    int offset=num%5==0?0:1;//最后如果剩余的数不足5个，我们也将其分成一个小组，和前面同等对待
+    int range=num/5+offset;
+    int median[range];//这个数组存的是每个小组内的中位数
+    for(int i=0;i<range;i++)//依次往median数组中填数
+    {
+        int beginI=star+i*5;//第i组数对应root数组上的位置
+        int endI=beginI+4;
+        median[i]=getmedian(root,beginI,min(endI,finish));
+    }
+    return bfprt(median,0,range-1,range/2);//求出生成好的median数组的中位数，作为partation函数的划分值
+}
+void swap(int root[],int a,int b)
+{
+    int temp=root[a];
+    root[a]=root[b];
+    root[b]=temp;
+}
+void partation(int root[],int beginJ,int endJ,int number)//partation函数求的是等于number的范围
+{
+    int less=beginJ-1;
+    int more=endJ+1;
+    int cur=beginJ;
+    while (cur<more)
+    {
+        if(root[cur]<number)
+        {
+            less++;
+            swap(root,cur,less);
+            cur++;
+        }
+        else if(root[cur]==number)
+            cur++;
+        else
+        {
+            more--;
+            swap(root,cur,more);
+        }
+    }
+    a[0]=less+1;
+    a[1]=more-1;
+}
+int bfprt(int root[],int begin,int end,int k)
+{
+    if(begin==end)//数组中只有一个数时，直接返回
+        return root[begin];
+    int divide=medianOfMedians(root,begin,end);//求出以哪个数作为划分值
+    partation(root,begin,end,divide);//注意，进行完partation过程后，root数组已经不是无序的了
+    if(k>=a[0]&&k<=a[1])//如果需要求的数正好在等于区域，直接返回root[k]
+        return root[k];
+    else if(k<a[0])//此时我们要找的数比divide小，递归求前半部分
+        return bfprt(root,begin,a[0]-1,k);
+    else if(k>a[1])//此时我们要找的数比divide大，递归求后半部分
+        return bfprt(root,a[1]+1,end,k);
+}
+int main()
+{
+    int n,k;
+    int root[100000];
+    while (cin>>n)
+    {
+        cin>>k;
+        for(int i=0;i<n;i++)
+            cin>>root[i];
+        cout<<bfprt(root,0,n-1,k-1)<<endl;
+        memset(root,0,sizeof(root));
+        memset(a,0,sizeof(a));
+    }
+}
