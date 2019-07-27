@@ -1,0 +1,23 @@
+vector<int> dailyTemperatures(vector<int>& T) {
+        //采用单调栈进行解题：单调栈从栈底到栈顶是从大到小的。
+        stack<pair<int,int>> st;
+        int size = T.size();
+        vector<int> res(size,0);
+        if(size<=1) return res;
+        for(int i=0;i<T.size();i++){
+            if(st.empty() || T[i]<=st.top().first){
+                st.push(make_pair(T[i],i));
+                continue;
+            }
+            while(!st.empty()&&T[i]>st.top().first){
+                res[st.top().second] = i - st.top().second;
+                st.pop();
+            }
+            st.push(make_pair(T[i],i));
+        }
+        while(!st.empty()){
+            res[st.top().second]=0;
+            st.pop();
+        }
+        return res;
+}
