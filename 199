@@ -16,23 +16,24 @@ public:
         if(p==nullptr){
             return res;
         }
-        queue1.push_back(p);
-        queue1.push_back(nullptr);
+        queue1.push_back(p);                  //初始化先把跟节点root插入
+        queue1.push_back(nullptr);              //用nullptr表示一个二叉树一层的遍历完毕。
         TreeNode* last;
         while(!queue1.empty()){
             TreeNode* temp=queue1.front();
-            if(temp==nullptr)
+            if(temp==nullptr)                        //说明当前temp就是“#”，那么上一次遍历的指针就是二叉树该层最后的非#节点，保存到结果数组res中
             {
-                res.push_back(last->val);
-                queue1.pop_front();//把空节点弹出
-                queue1.push_back(nullptr);
-                if(queue1.size()==1&&queue1.front()==nullptr){
+                res.push_back(last->val);         
+                queue1.pop_front();                //把“#”空节点从头部front弹出
+                queue1.push_back(nullptr);         //同时在尾部插入“#”
+                if(queue1.size()==1&&queue1.front()==nullptr)   //判断这个#是不是最后一个，防止程序在最后一个#时出现死循环，不停的弹出front,在back插入。
+                {
                     break;
                 }
             }
             else
             { 
-                last = temp;
+                last = temp;                          //这个节点是用来保存遇到“#”之后，上一次遍历的指针
                 queue1.pop_front();
                 if(temp->left!=nullptr){
                     queue1.push_back(temp->left);
