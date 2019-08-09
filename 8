@@ -1,5 +1,4 @@
-class Solution {
-public:
+//版本一：
     int myAtoi(string str) {
         if(str.size()==0)
             return 0;
@@ -45,12 +44,108 @@ public:
             
             i++;
         }
-        
         if(minus==false)
             return num;
         else
-            return 0-num;
-        
-        
+            return 0-num;    
     }
-};
+    
+    
+    
+    //版本二：
+    bool isValidNum(char c){
+        if((c>='0'&&c<='9')||c=='-'||c=='+')
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+    int char2num(char c){
+        return c-'0';
+    }
+    
+    int myAtoi(string str) {
+        bool isMinus=false;
+        bool isStart = false;
+        int size = str.size();
+        int ans = 0;
+        if(size<=0)
+        {
+            return 0;
+        }
+        for(int i=0;i<size;i++)
+        {
+            if(!isValidNum(str[i])&&!isStart){
+                if(str[i]==' ')
+                    continue;
+                else return 0;
+            }
+            else if(!isStart&&str[i]=='-'){
+                isMinus=true;
+                isStart = true;
+            }
+            else if(!isStart&&str[i]=='+'){
+                isMinus=false;
+                isStart = true;
+            }
+            else if(isValidNum(str[i]))
+            {
+                
+                if(isStart&&str[i]=='-')
+                {
+                    if(isMinus)
+                        return -ans;
+                    else
+                        return ans;
+                }else if(isStart&&str[i]=='+')
+                {
+                    if(isMinus)
+                        return -ans;
+                    else
+                        return ans;
+                }
+                if(!isStart){
+                    isStart=true;
+                    ans*=10;
+                    ans+=(str[i]-'0');
+                }else
+                {
+                    if(ans<=214748364)
+                    {   
+                        ans*=10;
+                    }
+                    else{
+                        if(isMinus){
+                            return INT_MIN;
+                        }else{
+                            return INT_MAX;
+                        }
+                    }
+                    if(ans>=2147483640){
+                        if(isMinus){
+                            if((str[i]-'0')>=8)
+                                return INT_MIN;
+                            else{
+                                return -(ans+(str[i]-'0'));
+                            }
+                        }else{
+                            if((str[i]-'0')>=7)
+                                return INT_MAX;
+                            else
+                                return ans+(str[i]-'0');
+                        }
+                    }
+                    else
+                        ans+=(str[i]-'0');
+                }
+            }
+            else if(isStart&&!isValidNum(str[i])){
+                break;
+            }
+        }
+        if(isMinus)
+            return -ans;
+        else
+            return ans;
+    }
