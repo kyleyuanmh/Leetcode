@@ -1,0 +1,28 @@
+//本人愚钝，自己没能把边界条件控制好，参考的https://blog.csdn.net/i_am_bird/article/details/78699892
+
+class Solution {
+public:
+    int divide(int dividend, int divisor)
+{
+       if(!divisor || (dividend == INT_MIN && divisor == -1))
+            return INT_MAX;
+        if(divisor == 1)
+            return dividend;
+        int sign = ((divisor < 0) ^ (dividend < 0)) ? -1 : 1;
+        long long dvd = labs(dividend);
+        long long dvi = labs(divisor);
+        int res = 0;
+        while(dvd >= dvi){
+            long long tmp = dvi;
+            int count = 1;
+            while(dvd >= (tmp << 1)){
+                tmp = tmp << 1;
+                count = count << 1;
+            }
+            dvd -= tmp;
+            res += count;
+        }
+        return sign*res;
+
+ }
+};
