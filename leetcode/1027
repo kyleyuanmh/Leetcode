@@ -1,3 +1,6 @@
+//方法一：暴力解决法时间复杂度O(n^3)不太好.容易超时
+//听说这是一道谷歌面试题，呵呵😑
+
 int longestArithSeqLength(vector<int>& A) {
         int size = A.size();
         if(size<=1)
@@ -57,3 +60,29 @@ int longestArithSeqLength(vector<int>& A) {
         }
         return ans+1;
     }
+    
+    
+    //方法2：动态规划
+    class Solution {
+public:
+    int longestArithSeqLength(vector<int>& A) {
+        int n = A.size(), ans = 0;
+        vector<unordered_map<int, int>> f(n);
+        for (int i = 1; i < n; i++)
+            for (int j = 0; j < i; j++) {
+                int s = A[j] - A[i];
+                if (f[j].find(s) == f[j].end()) {
+                    f[i][s] = 1;
+                } else {
+                    f[i][s] = f[j][s] + 1;
+                }
+                ans = max(ans, f[i][s]);
+            }
+        return ans + 1;
+    }
+};
+    
+    
+    
+    
+    
