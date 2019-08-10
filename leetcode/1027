@@ -1,0 +1,59 @@
+int longestArithSeqLength(vector<int>& A) {
+        int size = A.size();
+        if(size<=1)
+            return size;
+        int ans = 0;
+        unordered_map<int,int> count;//次数-前后差
+        
+        for(int k=0;k<size-1;k++)
+        {
+            int step=0;
+            int i=k;
+            int j=k+1;
+            while(i<size-1)
+            {
+                step++;
+                i = k;
+                j = i + step;
+                int diff = A[i]-A[j];
+                //cout<<"step"<<step<<"  "<<i<<"  "<<j<<endl;
+                int num = 0;
+                while(j<size && i<size)
+                { 
+                    if((A[i]-A[j]) == diff)
+                    {
+                        num++;
+                        i = j;
+                        j = j+1;
+                        
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                    //cout<<i<<"  "<<j<<"  diff:"<<diff<<";num:"<<num<<endl;
+                }
+                
+                if(count.find(diff)==count.end())
+                {
+                    count.insert(make_pair(diff,num));
+                }
+                else
+                {
+                    auto ite = count.find(diff);
+                    if(num>(*ite).second)
+                    {
+                        (*ite).second = num;
+                    }
+                }
+            }
+        }
+        
+        for(auto ite = count.begin();ite!=count.end();ite++){
+            //cout<<(*ite).first<<"  :  "<<(*ite).second<<endl;
+            if((*ite).second > ans){
+                ans = (*ite).second;
+            }
+        }
+        return ans+1;
+    }
