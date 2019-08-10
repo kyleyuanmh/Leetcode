@@ -1,0 +1,33 @@
+/*（转发自互联网）
+方法：动态规划。
+不得不说，方法真的很妙，仅仅用两个变量实现了整个数组中的遍历情况。
+
+cash:
+    表示第i天不卖股票，或者卖了手头上的股票之后，所剩下的现金:
+       当不卖的话，那么手头现金不变,还是cash
+       卖掉的话，应该是现在手头上股票加上今天股票的金额减去一次交易费。
+    cash=max(cash, hold + prices[i]-fee )
+    前一个表示不卖，后一个表示卖。
+  
+hold用来表示当前是否持有股票：
+  有股票说明可能是第i天刚买的，也有可能是第i-1天剩下的没有卖。
+  hold = max（hold, cash - prices[i]）
+  前一个表示不卖，后一个表示卖。
+
+注意：
+  根据规律可以发现，hold和cash两个变量的值都是根据，
+
+*/
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        int cash = 0;
+        int hold = -prices[0];
+        for(int i=1;i<prices.size();i++){
+            cash = max(cash,hold + prices[i] -fee);
+            hold = max(hold,cash - prices[i]);
+        }
+        return cash;
+    }
+};
