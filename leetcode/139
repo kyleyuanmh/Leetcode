@@ -1,0 +1,43 @@
+//动态规划：
+//其中动态数组dp[i]表示字符串i之前的字符串是能够进行匹配的。当然当一个元素为True的时候，他的前面的元素有可能还为false.
+//动态规划的思路就是：
+/*
+dp【0】= true，我们设置DP数组应该比正常字符串的长度打一个。
+然后我们用两套循环for(int i=0;i<size;i++)
+{for(int j=0;j<i;j++
+{ 
+  我们用来判断字符串[j-i]之间是否在dict中：
+    只要dp[j]==true,并且s[j-i]（不包含i）又能在字典中找到，那么这时候dp[i]就是true，说明这个字符串从0开始到i-1都是可以查到的。然后直接break即可
+}
+如果j从0-i遍历一遍也没有在字典dict中找到，说明这个实在不可以找到。所以就dp【i】=false;
+
+}
+
+详情见代码
+
+*/
+
+class Solution {
+public:  
+    bool wordBreak(string s, vector<string>& wordDict) 
+    {
+        unordered_set<string> dict(wordDict.begin(),wordDict.end());
+        vector<bool> dp(s.size()+1);
+        dp[0] = true;
+        for(int i = 0;i < s.size()+1; i++)
+        {
+            for(int j = 0;j < i;j++)
+            {
+                if(dp[j] && find(wordDict.begin(),wordDict.end(),s.substr(j,i-j))!=wordDict.end())
+                {
+                    dp[i] = true;
+                    break;
+                }
+                else{
+                    dp[i] = false;
+                }
+            }
+        }
+        return dp.back();
+    }
+};
