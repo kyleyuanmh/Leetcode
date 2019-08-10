@@ -62,7 +62,15 @@ int longestArithSeqLength(vector<int>& A) {
     }
     
     
-    //方法2：动态规划
+//方法2：动态规划
+//https://www.acwing.com/solution/LeetCode/content/1559/
+/*
+(动态规划) O(n2)O(n2)
+f(i,j)f(i,j) 表示以 ii 结尾的子序列，差为 jj 时的最长子序列长度。
+对任何 xx，f(i,x)=1f(i,x)=1 为初始状态。每次循环枚举 j<i。j<i，计算 s=a[j]−a[i] s=a[j]−a[i]，转移 f(i,s)=f(j,s)+1f(i,s)=f(j,s)+1。
+答案为 ff 数组中的最大值。
+状态数为为 O(n)O(n) 个，每次转移需要 O(n)O(n) 的时间，故总时间复杂度为 O(n2)O(n2)。
+*/
     class Solution {
 public:
     int longestArithSeqLength(vector<int>& A) {
@@ -74,7 +82,7 @@ public:
                 if (f[j].find(s) == f[j].end()) {
                     f[i][s] = 1;
                 } else {
-                    f[i][s] = f[j][s] + 1;
+                    f[i][s] = f[j][s] + 1;  //说明从(j之前->j)和（j->i）的差值相同，因此需要链接起来，这样0-i所有等差相同的就可以加起来。
                 }
                 ans = max(ans, f[i][s]);
             }
