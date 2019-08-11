@@ -1,0 +1,19 @@
+/*参考大神写的递归
+//真的很难想到这么写，我第一印象是中序遍历，然后用指针进行串起来，但是没想到会有
+[379,826]
+这个实例死活过不去。
+*/
+
+
+TreeNode* dfs(TreeNode* root,TreeNode* tail)
+    {
+        if(!root)
+            return tail;
+        TreeNode* res = dfs(root->left,root);
+        root->left = nullptr;
+        root->right = dfs(root->right,tail);
+        return res;
+    }
+    TreeNode* increasingBST(TreeNode* root) {
+        return dfs(root,nullptr);
+    }
