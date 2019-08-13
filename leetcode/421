@@ -1,0 +1,31 @@
+/*
+运用了a^b=c  a^c=b的异或的公式原理。
+其中原理就是从高位开始往低位计算，首先从31位开始，将数组nums中的所有第31位方位集合set中。
+然后让1<<31的数分别个集合里面的数进行^计算，然后如果得到的值在集合set中能找到的话，那么肯定这一位就是1，如果没有，那么这一位即为0.
+因为高位越大最后的结果就越大，就是我们求的最大异或值。我们尽量让高位设为1，
+然后依次类推，一直计算到右数第一位。
+
+*/
+
+int findMaximumXOR(vector<int>& nums) {
+        int res = 0;
+        int mask = 0;
+        unordered_set<int> s;
+        for (int i = 31; i >= 0; i--) {
+            s.clear();
+            mask |= 1 << i;
+            for (int num : nums) {
+                s.insert(num & mask);
+            }
+            int tmp = res | (1 << i);
+            for (int pre : s) {
+                if (s.count(tmp ^ pre)) {
+                    res = tmp;
+                    break;
+                }
+            }
+        }
+        return res;
+
+    }
+
