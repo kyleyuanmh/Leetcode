@@ -1,0 +1,27 @@
+//递归中的战斗机
+
+class Solution {
+private:
+    int dfs(TreeNode* node, int& lup) {
+        //分别计算左右两个节点的相同的节点数
+        int l = node->left ? dfs(node->left, lup) : 0;
+        int r = node->right ? dfs(node->right, lup) : 0;
+        
+        //如果左右节点跟根节点相同时
+        int resl = node->left && node->left->val == node->val ? l + 1 : 0;
+        int resr = node->right && node->right->val == node->val ? r + 1 : 0;
+        
+        lup = max(lup, resl + resr);
+        return max(resl, resr);
+    }
+public:
+    int longestUnivaluePath(TreeNode* root) {
+        if(root==nullptr)
+        {
+            return 0;
+        }
+        int ans = 0;
+        dfs(root,ans);
+        return ans;
+    }
+};
