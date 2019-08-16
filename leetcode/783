@@ -1,0 +1,29 @@
+//递归
+int dfs(TreeNode* root)
+    {
+        if(!root) return INT_MAX;
+        int l = INT_MAX;
+        int r = INT_MAX;
+        if(root->left)
+        {
+            TreeNode *p = root->left;
+            while(p->right) p=p->right;
+            l = root->val - p->val;
+            l = min( l, dfs(root->left) );
+        }
+        if(root->right)
+        {
+            TreeNode* p=root->right;
+            while(p->left) p=p->left;
+            r = p->val - root->val;
+            r = min(r, dfs(root->right));
+        }
+         return min(l,r);         
+    }
+    
+    int minDiffInBST(TreeNode* root) {
+        if(!root){
+            return 0;
+        }
+        return dfs(root);
+    }
