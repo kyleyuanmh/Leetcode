@@ -1,0 +1,51 @@
+//使用一个hashSet和一个双指针进行。
+//双指针分别表示子数组的首尾。其中子串里面所有的字符都存放在HashSet中，用于快速判断字符是否重复。在从头到尾遍历过程中，其中Set.size()的每更新时
+的最大值就是最后的输出结果，因此需要试试更新最大值。
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_set<char> charset;
+        int size = s.size();
+        if(size<=1)
+        {
+            return size;
+        }
+        int maxNum = 0;
+        int i=0;
+        int j=1;
+        charset.insert(s[i]);
+        while(i<j&&j<size)
+        {
+            if(maxNum<charset.size())
+            {
+                maxNum = charset.size();
+            }
+            while(j<size&&charset.find(s[j])==charset.end())
+            {
+                charset.insert(s[j]);
+                j++;
+            }
+            if(charset.size()>maxNum)
+            {
+                maxNum = charset.size();
+            }
+            while(charset.find(s[j])!=charset.end()&&i<j)
+            {
+                charset.erase(s[i]);
+                i++;
+                if(charset.size()==0)
+                {
+                    charset.insert(s[i]);
+                    if(maxNum<charset.size())
+                    {
+                        maxNum = charset.size();
+                    }
+                    j=i+1;
+                    break;
+                }
+            }
+        }
+        return maxNum;
+    }
+};
