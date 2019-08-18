@@ -1,0 +1,36 @@
+vector<int> rightSideView(TreeNode* root) {
+        TreeNode* p=root;
+        deque<TreeNode*> queue1;
+        vector<int> res;
+        if(p==nullptr){
+            return res;
+        }
+        queue1.push_back(p);
+        queue1.push_back(nullptr);
+        TreeNode* last;
+        while(!queue1.empty()){
+            TreeNode* temp=queue1.front();
+            if(temp==nullptr)
+            {
+                res.push_back(last->val);
+                queue1.pop_front();//把空节点弹出
+                queue1.push_back(nullptr);
+                if(queue1.size()==1&&queue1.front()==nullptr){
+                    break;
+                }
+            }
+            else
+            { 
+                last = temp;
+                queue1.pop_front();
+                if(temp->left!=nullptr){
+                    queue1.push_back(temp->left);
+                }
+                if(temp->right!=nullptr)
+                {
+                    queue1.push_back(temp->right);
+                }
+            }
+        }
+        return res;
+    }
