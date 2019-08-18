@@ -1,0 +1,37 @@
+class Solution {
+public:
+    TreeNode* makeTree(vector<int>& preorder,int preS,int preE,vector<int>& inorder,int inS,int inE)
+    {
+        if(preS>preE||inS>inE)
+            return nullptr;
+        int rootValue = preorder[preS];
+        TreeNode* root = new TreeNode(rootValue);
+        if(preS == preE && inS==inE)
+        {
+            return root;
+        }
+        int inOrder = inS;
+        while(inOrder<=inE && rootValue != inorder[inOrder])
+        {
+            inOrder++;
+        }
+        int leftLen = inOrder - inS;
+        if(leftLen>=0)
+        {
+            root->left = makeTree(preorder,preS+1,preS+leftLen,inorder,inS, inOrder-1);
+        }else
+            root->left = nullptr;
+        if(leftLen < preE - preS)
+        {
+            root->right = makeTree(preorder,preS+leftLen+1,preE,inorder,inOrder+1,inE);
+        }
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.size() != inorder.size()||preorder.size()==0||inorder.size()==0)
+        {
+            return nullptr;
+        }
+        return makeTree(preorder,0,preorder.size()-1,inorder,0,inorder.size()-1);
+    }
+};
