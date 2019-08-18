@@ -1,0 +1,40 @@
+class Solution {
+private:
+    TreeNode* makeTree(vector<int>& inorder, vector<int>& postorder,int inS,int inE,int postS,int postE)
+    {
+        if(inS>inE||postS>postE)
+        {
+            return nullptr;
+        }
+        int rootValue = postorder[postE];
+        TreeNode* root = new TreeNode(rootValue);
+        if(inS==inE||postS==postE)
+        {
+            return root;
+        }
+        int rootIndex = inS;
+        while(rootIndex<=inE && inorder[rootIndex]!=rootValue)
+        {
+            rootIndex++;
+        }
+        int leftLen = rootIndex-inS;
+        if(leftLen>0)
+        {
+            root->left = makeTree(inorder,postorder,inS,leftLen+inS-1,postS,postS+leftLen-1);
+        }
+        if(rootIndex<inE)
+        {
+            root->right = makeTree(inorder,postorder,rootIndex+1,inE,postS+leftLen,postE-1);
+        }
+        return root;
+  
+    }
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        if(inorder.size()!=postorder.size())
+        {
+            return nullptr;
+        }
+        return makeTree(inorder,postorder,0,inorder.size()-1,0,postorder.size()-1);
+    }
+};
