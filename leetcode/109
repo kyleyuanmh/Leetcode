@@ -1,0 +1,35 @@
+class Solution {
+private:
+    TreeNode* makeBalanceTree(vector<int>&nums,int left,int right)
+    {
+        if(left>right)
+            return nullptr;
+        TreeNode * root;
+        if(left == right)
+        {
+            root = new TreeNode(nums[left]);
+            return root;
+        }
+        int mid = (left+right)/2;
+        root = new TreeNode(nums[mid]);
+        root->left = makeBalanceTree(nums,left,mid-1);
+        root->right = makeBalanceTree(nums,mid+1,right);
+        return root;
+    }
+        
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        if(!head)
+        {
+            return nullptr;
+        }
+        vector<int>nums;
+        ListNode* p=head;
+        while(p!=nullptr)
+        {
+            nums.push_back(p->val);
+            p=p->next;
+        }
+        return makeBalanceTree(nums,0,nums.size()-1);
+    }
+};
