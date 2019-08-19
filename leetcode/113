@@ -1,0 +1,36 @@
+class Solution {
+private:
+    void paths(vector<vector<int>>&ans,vector<int> tmp,int curSum,TreeNode* root,int sum)
+    {
+        if(!root)
+            return;
+        if(!root->left&&!root->right)
+        {
+            if(curSum+root->val == sum)
+            {
+                tmp.push_back(root->val);
+                ans.push_back(tmp);
+                return;
+            }else 
+                return;   
+        }
+        tmp.push_back(root->val);
+        paths(ans,tmp,curSum+root->val,root->left,sum);
+        paths(ans,tmp,curSum+root->val,root->right,sum);
+    }
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vector<vector<int>>ans;
+        if(!root)
+        {
+            return ans;
+        }
+        if(!root->left&&!root->right&&root->val!=sum)
+        {
+            return ans;
+        }
+        vector<int>tmp;
+        paths(ans,tmp,0,root,sum);
+        return ans;
+    }
+};
