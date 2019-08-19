@@ -1,1 +1,31 @@
-
+class Solution {
+void makeLink(TreeNode* root)
+{
+    if(!root) return;
+    makeLink(root->left);
+    makeLink(root->right);
+    TreeNode* l = root->left;
+    TreeNode* r = root->right;
+    if(l!=nullptr)
+    {
+        root->left = nullptr;
+        root->right = l;
+        while(l->right!=nullptr)
+        {
+            l = l->right;
+        }
+        l->right = r;
+    }else
+    {
+            root->left = nullptr;
+            root->right = r;
+    }
+    
+}
+    
+public:
+    void flatten(TreeNode* root) {
+        if((!root)||(!root->left&&!root->right)) return;
+        makeLink(root);
+    }
+};
