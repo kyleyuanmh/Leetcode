@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+  int sum = 0;
+  void makeSum(TreeNode* root, int curSum)
+  {
+    if(!root->left&&!root->right)
+    {
+      curSum *= 10;
+      curSum += root->val;
+      cout<<curSum<<endl;
+      sum += curSum;
+      return;
+    }
+    curSum*=10;
+    curSum+=root->val;
+    if(root->left)
+    {
+      makeSum(root->left,curSum);
+    }
+    if(root->right)
+    {
+      makeSum(root->right,curSum);
+    }
+  }
+public:
+    int sumNumbers(TreeNode* root) {
+      if(!root) return 0;
+      makeSum(root,0);
+      return sum;
+    }
+};
