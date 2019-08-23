@@ -1,0 +1,43 @@
+class Solution {
+    void colorize(vector<vector<char>>& grid,int i,int j,int timer)
+    {
+        grid[i][j]+=timer;
+        if(i>0&&grid[i-1][j]=='1')
+        {
+            colorize(grid,i-1,j,timer);
+        }
+        if(j>0&&grid[i][j-1]=='1')
+        {
+            colorize(grid,i,j-1,timer);
+        }
+        if(i<grid.size()-1&&grid[i+1][j]=='1')
+        {
+            colorize(grid,i+1,j,timer);
+        }
+        if(j<grid[0].size()-1&&grid[i][j+1]=='1')
+        {
+            colorize(grid,i,j+1,timer);
+        }
+    }
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int m = grid.size();
+        if(m<=0) return 0;
+        int n = grid[0].size();
+        if(n<=0) return 0;
+        
+        int timer=0;
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(grid[i][j]=='1')
+                {
+                    timer++;
+                    colorize(grid,i,j,timer);
+                }
+            }
+        }
+        return timer;
+    }
+};
